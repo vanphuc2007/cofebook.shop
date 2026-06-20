@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ | CaféBook</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --coffee-dark: #3e2723;
+            --coffee-light: #f5f0e6;
+            --coffee-accent: #ffb300;
+        }
+        body {
+            background-color: var(--coffee-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            /* Hiệu ứng chuyển trang */
+            animation: fadeIn 0.4s ease-in-out forwards;
+            opacity: 0; 
+        }
+        .page-fade-out {
+            animation: fadeOut 0.3s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-15px); }
+        }
+
+        .navbar-custom { background-color: var(--coffee-dark); }
+        .hover-zoom { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-zoom:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
+        }
+        .hero-banner {
+            background: linear-gradient(rgba(62, 39, 35, 0.75), rgba(62, 39, 35, 0.5)), url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf') center/cover;
+            min-height: 450px;
+            display: flex;
+            align-items: center;
+        }
+        .modal-header-coffee {
+            background: linear-gradient(45deg, var(--coffee-dark), #5d4037);
+            color: white;
+            border-bottom: none;
+        }
+        .form-floating:focus-within label { color: var(--coffee-accent); }
+
+        .btn-ios-glass {
+            background: rgba(255, 255, 255, 0.25) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+            color: var(--coffee-dark) !important;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+        .btn-ios-glass:hover {
+            background: rgba(255, 255, 255, 0.4) !important;
+            border: 1px solid rgba(255, 255, 255, 0.6) !important;
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .btn-ios-glass-dark {
+            background: rgba(62, 39, 35, 0.65) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+        .btn-ios-glass-dark:hover {
+            background: rgba(62, 39, 35, 0.85) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.25) !important;
+            color: var(--coffee-accent) !important;
+        }
+
+        .btn-ios-glass-warning {
+            background: rgba(255, 179, 0, 0.75) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px rgba(255, 179, 0, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.6) !important;
+            color: #3e2723 !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+        .btn-ios-glass-warning:hover {
+            background: rgba(255, 179, 0, 0.95) !important;
+            border: 1px solid rgba(255, 255, 255, 0.7) !important;
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 12px 40px rgba(255, 179, 0, 0.45), inset 0 1px 3px rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .nav-ios-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50rem;
+            padding: 8px 20px !important;
+            margin: 0 5px;
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .nav-ios-glass:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .nav-ios-glass.active {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #fff !important;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255,255,255,0.4);
+        }
+        .nav-ios-glass.accent {
+            background: rgba(255, 179, 0, 0.15);
+            border-color: rgba(255, 179, 0, 0.3);
+            color: var(--coffee-accent) !important;
+        }
+        .nav-ios-glass.accent:hover {
+            background: rgba(255, 179, 0, 0.4);
+            border-color: rgba(255, 179, 0, 0.7);
+            color: #fff !important;
+        }
+
+        .user-card-glass {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-left: 5px solid var(--coffee-accent);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.7);
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .user-card-glass { flex-direction: row; }
+        }
+
+        .flying-img {
+            position: fixed;
+            z-index: 9999;
+            border-radius: 50%;
+            object-fit: cover;
+            pointer-events: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2) translateY(-3px); }
+            100% { transform: scale(1); }
+        }
+        .cart-pop { animation: pop 0.4s ease; }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="index.html">
+                <i class="bi bi-cup-hot-fill text-warning"></i> CaféBook
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-ios-glass active" href="index.html">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-ios-glass" href="story.html">Câu chuyện</a>
+                    </li>
+                    <li class="nav-item mt-2 mt-lg-0">
+                        <a class="nav-link nav-ios-glass accent fw-bold" href="order.html">ĐẶT MÓN / ĐẶT BÀN</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav align-items-center mt-3 mt-lg-0">
+                    <li class="nav-item me-3">
+                        <a class="nav-link text-light hover-text-warning" href="#" data-bs-toggle="modal" data-bs-target="#loginModal" id="navLoginBtn">
+                            <i class="bi bi-person-circle"></i> Tài khoản
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-ios-glass-warning fw-bold rounded-pill px-4 shadow-sm" href="checkout.html" id="cart-icon-nav">
+                            <i class="bi bi-cart3"></i> Giỏ hàng (<span id="cartCountTop">0</span>)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-banner text-white text-center shadow-sm">
+        <div class="container py-5">
+            <h1 class="display-4 fw-bold text-warning mb-3">Hương Vị Cà Phê Đích Thực</h1>
+            <p class="lead mb-5 fs-4">"Đậm vị cà phê - Giao tận nơi. Bắt đầu ngày mới đầy năng lượng cùng CaféBook!"</p>
+            <a href="order.html" class="btn btn-ios-glass-warning btn-lg fw-bold px-5 py-3 rounded-pill shadow">
+                XEM THỰC ĐƠN NGAY <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="container mt-5 flex-grow-1">
+        <div class="user-card-glass">
+            <div class="mb-3 mb-md-0 fs-5">
+                Xin chào, <strong class="text-dark" id="userNameDisplay">Khách!</strong>
+                <span class="mx-2 text-muted">|</span> 
+                Hạng thẻ: <span id="userTierDisplay" class="badge bg-secondary text-white px-3 py-2 rounded-pill shadow-sm">Chưa đăng nhập</span>
+                <span class="mx-2 text-muted">|</span> 
+                Điểm tích lũy: <span class="text-danger fw-bold" id="userPointsDisplay">0 điểm</span>
+            </div>
+            <div id="authButtons" class="d-flex gap-2">
+                <button class="btn btn-ios-glass fw-bold rounded-pill px-4" id="btnLoginPrompt" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="bi bi-person-circle"></i> Đăng nhập
+                </button>
+                <button class="btn btn-ios-glass fw-bold rounded-pill px-4 d-none text-danger" id="btnLogoutBtn" onclick="handleLogout()">
+                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                </button>
+            </div>
+        </div>
+
+        <div class="mb-5 text-center">
+            <h4 class="fw-bold mb-4" style="color: var(--coffee-dark);">KHÁM PHÁ THỰC ĐƠN</h4>
+            <div class="d-flex justify-content-center flex-wrap gap-3 p-3 rounded-4" style="background: rgba(255,255,255,0.4); backdrop-filter: blur(10px);">
+                <a href="order.html?category=Cà%20phê%20đen" class="btn btn-ios-glass px-4 py-2 rounded-pill text-decoration-none">☕ Cà phê đen</a>
+                <a href="order.html?category=Cà%20phê%20sữa" class="btn btn-ios-glass px-4 py-2 rounded-pill text-decoration-none">🫖 Cà phê sữa</a>
+                <a href="order.html?category=Trà%20trái%20cây" class="btn btn-ios-glass px-4 py-2 rounded-pill text-decoration-none">🍹 Trà trái cây</a>
+                <a href="order.html?category=Bánh%20ngọt" class="btn btn-ios-glass px-4 py-2 rounded-pill text-decoration-none">🍰 Bánh ngọt</a>
+            </div>
+        </div>
+
+        <hr class="mb-5 border-secondary opacity-25">
+
+        <div class="mb-5 pb-4 text-center">
+            <h3 class="fw-bold mb-4" style="color: var(--coffee-dark);">🔥 MÓN NỔI BẬT HÔM NAY</h3>
+            
+            <div id="loading-featured" class="text-center my-4">
+                <div class="spinner-border text-warning" role="status"></div>
+                <p class="text-muted mt-2 fw-bold">Đang tải món ngon...</p>
+            </div>
+
+            <div class="row g-4 justify-content-center" id="featured-products">
+                </div>
+
+            <div class="mt-5">
+                <a href="order.html" class="btn btn-ios-glass rounded-pill px-5 py-3 fw-bold text-decoration-none">
+                    XEM TOÀN BỘ THỰC ĐƠN <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white text-center py-5 mt-auto" style="background-color: var(--coffee-dark);">
+        <div class="container">
+            <div class="mb-3">
+                <a href="#" class="text-white text-decoration-none mx-3">Về chúng tôi</a>
+                <a href="#" class="text-white text-decoration-none mx-3">Hệ thống cửa hàng</a>
+                <a href="#" class="text-white text-decoration-none mx-3">Chính sách</a>
+            </div>
+            <div class="mb-4 mt-3">
+                <a href="#" class="text-white fs-4 mx-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-white fs-4 mx-2"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-white fs-4 mx-2"><i class="bi bi-tiktok"></i></a>
+            </div>
+            <hr class="w-50 mx-auto bg-light opacity-50">
+            <small class="text-light opacity-75 d-block mt-3">© 2026 CaféBook. Phục vụ với trọn đam mê.</small>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 overflow-hidden border-0 shadow-lg">
+                <div class="modal-header modal-header-coffee">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-person-bounding-box me-2 text-warning"></i> Chào mừng đến với CaféBook</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 p-md-5 bg-white">
+                    <ul class="nav nav-pills mb-4 justify-content-center" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-bold px-4 rounded-pill" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" style="color: var(--coffee-dark);">Đăng nhập</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-bold px-4 rounded-pill" data-bs-toggle="pill" data-bs-target="#pills-register" type="button" style="color: var(--coffee-dark);">Đăng ký</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-login" role="tabpanel">
+                            <form id="loginForm">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control rounded-4" id="loginEmail" placeholder="name@example.com" required>
+                                    <label for="loginEmail">Email của bạn</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control rounded-4" id="loginPassword" placeholder="Password" required>
+                                    <label for="loginPassword">Mật khẩu</label>
+                                </div>
+                                <button type="submit" class="btn btn-warning w-100 fw-bold py-3 rounded-pill shadow-sm fs-5">ĐĂNG NHẬP NGAY</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="pills-register" role="tabpanel">
+                            <form id="registerForm">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control rounded-4" id="regName" placeholder="Tên của bạn" required>
+                                    <label for="regName">Họ và tên</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control rounded-4" id="regEmail" placeholder="name@example.com" required>
+                                    <label for="regEmail">Email</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control rounded-4" id="regPassword" placeholder="Password" required>
+                                    <label for="regPassword">Mật khẩu</label>
+                                </div>
+                                <button type="submit" class="btn btn-dark w-100 fw-bold py-3 rounded-pill shadow-sm fs-5">ĐĂNG KÝ NGAY</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const API_DRINKS = "https://6a0b17dc21e445625697483c.mockapi.io/cafebook/api/v1/drinks";
+
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        };
+
+        function renderUserInfo() {
+            const currentUser = JSON.parse(localStorage.getItem('cafeCurrentUser'));
+            const nameDisplay = document.getElementById('userNameDisplay');
+            const tierDisplay = document.getElementById('userTierDisplay');
+            const pointsDisplay = document.getElementById('userPointsDisplay');
+            
+            const btnLoginPrompt = document.getElementById('btnLoginPrompt');
+            const btnLogoutBtn = document.getElementById('btnLogoutBtn');
+            const navLoginBtn = document.getElementById('navLoginBtn');
+
+            if (currentUser && nameDisplay) {
+                nameDisplay.innerText = currentUser.name + "!";
+                pointsDisplay.innerText = currentUser.points + " điểm";
+                
+                let tierHTML = '';
+                if (currentUser.points >= 500) {
+                    tierHTML = 'Thành Viên Kim Cương <i class="bi bi-gem ms-1"></i>';
+                    tierDisplay.className = "badge bg-info text-dark px-3 py-2 rounded-pill shadow-sm";
+                } else if (currentUser.points >= 100) {
+                    tierHTML = 'Thành Viên Vàng <i class="bi bi-star-fill ms-1"></i>';
+                    tierDisplay.className = "badge bg-warning text-dark px-3 py-2 rounded-pill shadow-sm";
+                } else {
+                    tierHTML = 'Thành Viên Bạc <i class="bi bi-star ms-1"></i>';
+                    tierDisplay.className = "badge bg-secondary text-white px-3 py-2 rounded-pill shadow-sm";
+                }
+                tierDisplay.innerHTML = tierHTML;
+
+                if(btnLoginPrompt) btnLoginPrompt.classList.add('d-none');
+                if(btnLogoutBtn) btnLogoutBtn.classList.remove('d-none');
+                if(navLoginBtn) {
+                    navLoginBtn.innerHTML = `<i class="bi bi-person-check-fill"></i> ${currentUser.name}`;
+                    navLoginBtn.removeAttribute('data-bs-toggle');
+                }
+            }
+        }
+
+        const registerForm = document.getElementById('registerForm');
+        if(registerForm) {
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('regName').value;
+                const email = document.getElementById('regEmail').value;
+                
+                const newUser = { name: name, email: email, points: 0 };
+                localStorage.setItem('cafeCurrentUser', JSON.stringify(newUser));
+                
+                alert('Đăng ký thành công! Chào mừng ' + name);
+                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+                renderUserInfo();
+            });
+        }
+
+        const loginForm = document.getElementById('loginForm');
+        if(loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                
+                let user = JSON.parse(localStorage.getItem('cafeCurrentUser'));
+                if (!user || user.email !== email) {
+                    user = { name: "Khách hàng " + email.split('@')[0], email: email, points: 0 };
+                    localStorage.setItem('cafeCurrentUser', JSON.stringify(user));
+                }
+                
+                alert('Đăng nhập thành công!');
+                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+                renderUserInfo();
+            });
+        }
+
+        window.handleLogout = () => {
+            if(confirm("Bạn muốn đăng xuất?")) {
+                localStorage.removeItem('cafeCurrentUser');
+                location.reload(); 
+            }
+        };
+
+        const updateCartUI = () => {
+            const cart = JSON.parse(localStorage.getItem('cafeCart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCountTop').innerText = totalItems;
+        };
+
+        const fetchFeaturedDrinks = async () => {
+            try {
+                const response = await fetch(API_DRINKS);
+                let data = await response.json();
+                document.getElementById('loading-featured').style.display = 'none';
+
+                const container = document.getElementById('featured-products');
+
+                if (typeof data === 'string' || data.length === 0) {
+                    container.innerHTML = '<p class="text-muted">Hiện chưa có món nổi bật nào.</p>';
+                    return;
+                }
+
+                const featured = data.slice(0, 3);
+                
+                container.innerHTML = featured.map(drink => {
+                    const imgUrl = drink.image || `https://placehold.co/500x400/3e2723/fff?text=${encodeURIComponent(drink.name)}`;
+                    const price = drink.price || 35000;
+
+                    return `
+                        <div class="col-md-4">
+                            <div class="card product-card shadow-sm hover-zoom h-100 border-0 rounded-4 overflow-hidden bg-white">
+                                <img src="${imgUrl}" class="card-img-top product-img" alt="${drink.name}" style="height:260px; object-fit:cover;">
+                                <div class="card-body p-4 d-flex flex-column" style="background: rgba(255,255,255,0.7);">
+                                    <h5 class="card-title fw-bold text-dark">${drink.name}</h5>
+                                    <div class="mt-auto pt-2">
+                                        <p class="text-danger fw-bold fs-4 mb-3">${formatCurrency(price)}</p>
+                                        <button class="btn btn-ios-glass-dark w-100 fw-bold rounded-pill py-2 btn-add-cart" onclick="flyToCart(this, '${drink.id}', '${drink.name}', ${price}, event)">
+                                            <i class="bi bi-cart-plus me-1"></i> THÊM VÀO GIỎ
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                document.getElementById('loading-featured').innerHTML = '<p class="text-danger fw-bold">Không thể kết nối đến máy chủ API.</p>';
+            }
+        };
+
+        window.flyToCart = (btnElement, id, name, price, event) => {
+            const card = btnElement.closest('.product-card');
+            const img = card.querySelector('.product-img');
+            const cartIcon = document.getElementById('cart-icon-nav');
+
+            const flyingImg = img.cloneNode();
+            flyingImg.classList.add('flying-img');
+            document.body.appendChild(flyingImg);
+
+            const imgRect = img.getBoundingClientRect();
+            const cartRect = cartIcon.getBoundingClientRect();
+
+            flyingImg.style.left = imgRect.left + 'px';
+            flyingImg.style.top = imgRect.top + 'px';
+            flyingImg.style.width = imgRect.width + 'px';
+            flyingImg.style.height = imgRect.height + 'px';
+
+            const animation = flyingImg.animate([
+                { transform: 'translate(0, 0) scale(1)', opacity: 1, borderRadius: '0%' },
+                { transform: `translate(${cartRect.left - imgRect.left}px, ${cartRect.top - imgRect.top}px) scale(0.1)`, opacity: 0.8, borderRadius: '50%' }
+            ], { 
+                duration: 800, 
+                easing: 'cubic-bezier(0.25, 1, 0.5, 1)' 
+            });
+
+            animation.onfinish = () => {
+                flyingImg.remove();
+                cartIcon.classList.add('cart-pop');
+                setTimeout(() => cartIcon.classList.remove('cart-pop'), 400);
+                addToCartLogic(btnElement, id, name, price);
+            };
+        };
+
+        window.addToCartLogic = (btnElement, id, name, price) => {
+            let cart = JSON.parse(localStorage.getItem('cafeCart')) || [];
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ id, name, price, quantity: 1 });
+            }
+            
+            localStorage.setItem('cafeCart', JSON.stringify(cart));
+            updateCartUI();
+
+            const originalText = btnElement.innerHTML;
+            btnElement.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> ĐÃ THÊM';
+            btnElement.classList.replace('btn-ios-glass-dark', 'btn-success');
+            
+            setTimeout(() => {
+                btnElement.innerHTML = originalText;
+                btnElement.classList.replace('btn-success', 'btn-ios-glass-dark');
+            }, 1500);
+        };
+
+        // JS cho hiệu ứng chuyển trang
+        window.addEventListener('DOMContentLoaded', () => {
+            renderUserInfo();
+            updateCartUI();
+            fetchFeaturedDrinks();
+            
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && !href.startsWith('#') && !this.hasAttribute('data-bs-toggle') && !this.hasAttribute('onclick')) {
+                        e.preventDefault();
+                        document.body.classList.add('page-fade-out');
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 300);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

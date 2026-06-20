@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Câu Chuyện | CaféBook</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --coffee-dark: #3e2723;
+            --coffee-light: #f5f0e6;
+            --coffee-accent: #ffb300;
+        }
+        body {
+            background-color: var(--coffee-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Hiệu ứng chuyển trang */
+            animation: fadeIn 0.4s ease-in-out forwards;
+            opacity: 0; 
+        }
+        .page-fade-out {
+            animation: fadeOut 0.3s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-15px); }
+        }
+
+        .navbar-custom { background-color: var(--coffee-dark); }
+        .hover-zoom { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-zoom:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
+        }
+        .hero-banner {
+            background: linear-gradient(rgba(62, 39, 35, 0.7), rgba(62, 39, 35, 0.8)), url('https://images.unsplash.com/photo-1447933601403-0c6688de566e') center/cover;
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+        }
+        .jump-nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1020;
+        }
+        .jump-nav .btn {
+            border-color: var(--coffee-dark);
+            color: var(--coffee-dark);
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .jump-nav .btn:hover {
+            background-color: var(--coffee-dark);
+            color: white;
+        }
+        .section-title {
+            color: var(--coffee-dark);
+            border-bottom: 2px solid var(--coffee-accent);
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+        .modal-header-coffee {
+            background: linear-gradient(45deg, var(--coffee-dark), #5d4037);
+            color: white;
+            border-bottom: none;
+        }
+        .form-floating:focus-within label { color: var(--coffee-accent); }
+
+        .nav-ios-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50rem;
+            padding: 8px 20px !important;
+            margin: 0 5px;
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .nav-ios-glass:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .nav-ios-glass.active {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #fff !important;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255,255,255,0.4);
+        }
+        .nav-ios-glass.accent {
+            background: rgba(255, 179, 0, 0.15);
+            border-color: rgba(255, 179, 0, 0.3);
+            color: var(--coffee-accent) !important;
+        }
+        .nav-ios-glass.accent:hover {
+            background: rgba(255, 179, 0, 0.4);
+            border-color: rgba(255, 179, 0, 0.7);
+            color: #fff !important;
+        }
+
+        .btn-ios-glass-warning {
+            background: rgba(255, 179, 0, 0.75) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px rgba(255, 179, 0, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.6) !important;
+            color: #3e2723 !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+        .btn-ios-glass-warning:hover {
+            background: rgba(255, 179, 0, 0.95) !important;
+            border: 1px solid rgba(255, 255, 255, 0.7) !important;
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 12px 40px rgba(255, 179, 0, 0.45), inset 0 1px 3px rgba(255, 255, 255, 0.8) !important;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="index.html">
+                <i class="bi bi-cup-hot-fill text-warning"></i> CaféBook
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-ios-glass" href="index.html">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-ios-glass active" href="story.html">Câu chuyện</a>
+                    </li>
+                    <li class="nav-item mt-2 mt-lg-0">
+                        <a class="nav-link nav-ios-glass accent fw-bold" href="order.html">ĐẶT MÓN / ĐẶT BÀN</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav align-items-center mt-3 mt-lg-0">
+                    <li class="nav-item me-3">
+                        <a class="nav-link text-light hover-text-warning" href="#" data-bs-toggle="modal" data-bs-target="#loginModal" id="navLoginBtn">
+                            <i class="bi bi-person-circle"></i> Tài khoản
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-ios-glass-warning fw-bold rounded-pill px-4 shadow-sm" href="checkout.html">
+                            <i class="bi bi-cart3"></i> Giỏ hàng (<span id="cartCountTop">0</span>)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-banner text-white text-center shadow-sm">
+        <div class="container py-5">
+            <h1 class="display-4 fw-bold text-warning mb-3">HÀNH TRÌNH TỪ HẠT ĐẾN TÁCH</h1>
+            <p class="lead fs-4 fst-italic">"Mỗi giọt cà phê là một câu chuyện lịch sử."</p>
+        </div>
+    </div>
+
+    <div class="jump-nav shadow-sm py-3 mb-5 border-bottom sticky-top" style="top: 70px;">
+        <div class="container text-center">
+            <span class="fw-bold me-2 text-muted"><i class="bi bi-cursor-fill"></i> Nhảy đến:</span>
+            <a href="#lich-su" class="btn btn-sm mx-1 rounded-pill px-3">Lịch sử ra đời</a>
+            <a href="#tu-dien" class="btn btn-sm mx-1 rounded-pill px-3">Các loại Cà phê</a>
+            <a href="#dia-chi" class="btn btn-sm mx-1 rounded-pill px-3">Địa chỉ Quán</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <section id="lich-su" class="mb-5 pt-4">
+            <h3 class="fw-bold text-uppercase section-title mb-4">1. Lịch sử ra đời cà phê</h3>
+            <div class="row text-center align-items-stretch g-3 mt-3">
+                <div class="col-md">
+                    <div class="p-4 bg-white shadow-sm rounded-4 h-100 hover-zoom">
+                        <i class="bi bi-brightness-alt-high text-warning fs-1 mb-2"></i>
+                        <h5 class="fw-bold text-dark">Năm 850</h5>
+                        <p class="text-muted small mb-0">Truyền thuyết về chàng chăn dê Kaldi phát hiện ra hạt cà phê tại vùng Kaffa, Ethiopia.</p>
+                    </div>
+                </div>
+                <div class="col-md-auto d-flex align-items-center justify-content-center py-2 py-md-0">
+                    <i class="bi bi-arrow-right fs-3 text-muted d-none d-md-block"></i>
+                    <i class="bi bi-arrow-down fs-3 text-muted d-block d-md-none"></i>
+                </div>
+                <div class="col-md">
+                    <div class="p-4 bg-white shadow-sm rounded-4 h-100 hover-zoom">
+                        <i class="bi bi-globe-americas text-primary fs-1 mb-2"></i>
+                        <h5 class="fw-bold text-dark">Thế kỷ 15</h5>
+                        <p class="text-muted small mb-0">Hạt cà phê lan truyền khắp Trung Đông và nhanh chóng trở thành thức uống phổ biến.</p>
+                    </div>
+                </div>
+                <div class="col-md-auto d-flex align-items-center justify-content-center py-2 py-md-0">
+                    <i class="bi bi-arrow-right fs-3 text-muted d-none d-md-block"></i>
+                    <i class="bi bi-arrow-down fs-3 text-muted d-block d-md-none"></i>
+                </div>
+                <div class="col-md">
+                    <div class="p-4 bg-white shadow-sm rounded-4 h-100 hover-zoom">
+                        <i class="bi bi-geo-alt-fill text-danger fs-1 mb-2"></i>
+                        <h5 class="fw-bold text-dark">Thế kỷ 19</h5>
+                        <p class="text-muted small mb-0">Cà phê chính thức du nhập vào Việt Nam qua các giáo sĩ người Pháp.</p>
+                    </div>
+                </div>
+                <div class="col-md-auto d-flex align-items-center justify-content-center py-2 py-md-0">
+                    <i class="bi bi-arrow-right fs-3 text-muted d-none d-md-block"></i>
+                    <i class="bi bi-arrow-down fs-3 text-muted d-block d-md-none"></i>
+                </div>
+                <div class="col-md">
+                    <div class="p-4 shadow-sm rounded-4 h-100 hover-zoom" style="background-color: var(--coffee-dark); color: white;">
+                        <i class="bi bi-cup-hot-fill text-warning fs-1 mb-2"></i>
+                        <h5 class="fw-bold text-warning">Hôm nay</h5>
+                        <p class="small mb-0 opacity-75">CaféBook tiếp nối giá trị, mang đến cho bạn hương vị nguyên bản từ những hạt ngon nhất.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tu-dien" class="mb-5 pt-4">
+            <h3 class="fw-bold text-uppercase section-title mb-4">2. Từ điển các loại cà phê</h3>
+            <div class="row g-4 mt-2">
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100 hover-zoom border-0 rounded-4 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=500" class="card-img-top" alt="Cà phê Phin" style="height:220px; object-fit:cover;">
+                        <div class="card-body bg-white p-4">
+                            <h5 class="card-title fw-bold" style="color: var(--coffee-dark);">Cà phê Phin Việt Nam</h5>
+                            <p class="card-text text-muted mb-0">Hương vị đậm đặc, đắng gắt đặc trưng, thưởng thức kèm sữa đặc và đá viên.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100 hover-zoom border-0 rounded-4 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=500" class="card-img-top" alt="Espresso" style="height:220px; object-fit:cover;">
+                        <div class="card-body bg-white p-4">
+                            <h5 class="card-title fw-bold" style="color: var(--coffee-dark);">Espresso (Ý)</h5>
+                            <p class="card-text text-muted mb-0">Chiết xuất dưới áp suất cao, mang lại vị đậm đà nguyên chất cùng lớp crema béo ngậy.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100 hover-zoom border-0 rounded-4 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500" class="card-img-top" alt="Latte" style="height:220px; object-fit:cover;">
+                        <div class="card-body bg-white p-4">
+                            <h5 class="card-title fw-bold" style="color: var(--coffee-dark);">Latte & Cappuccino</h5>
+                            <p class="card-text text-muted mb-0">Sự kết hợp hoàn hảo và nghệ thuật giữa nền Espresso và sữa tươi đánh nóng, vị ngọt dịu êm.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dia-chi" class="mb-5 pt-4">
+            <h3 class="fw-bold text-uppercase section-title mb-4">3. Vị trí & Không gian quán</h3>
+            <div class="row align-items-center bg-white p-4 p-md-5 shadow-sm rounded-4 mt-2">
+                <div class="col-md-7 mb-4 mb-md-0">
+                    <div class="ratio ratio-16x9 shadow-sm rounded-4 overflow-hidden">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.096814183571!2d105.82654061533202!3d21.028811885998316!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab9bd9861ca1%3A0xe7887f7b72ca17a9!2zSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1650000000000!5m2!1svi!2s" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <small class="text-muted mt-3 d-block fst-italic text-center"><i class="bi bi-info-circle"></i> Bạn có thể phóng to, thu nhỏ hoặc bấm chỉ đường trực tiếp.</small>
+                </div>
+                <div class="col-md-5 ps-md-5">
+                    <h4 class="fw-bold mb-4" style="color: var(--coffee-dark);">Ghé thăm CaféBook</h4>
+                    <ul class="list-unstyled lh-lg fs-5 mb-4 text-muted">
+                        <li><i class="bi bi-geo-alt-fill text-danger me-2"></i> <strong>Cơ sở 1:</strong> 123 Đường A, Quận B, TP.X</li>
+                        <li><i class="bi bi-clock-fill text-warning me-2"></i> <strong>Giờ mở cửa:</strong> 07:00 - 22:30 hàng ngày</li>
+                        <li><i class="bi bi-telephone-fill text-success me-2"></i> <strong>Hotline:</strong> <span class="text-danger fw-bold">1900 xxxx</span></li>
+                    </ul>
+                    <a href="#" class="btn btn-lg w-100 mt-2 shadow-sm rounded-pill fw-bold text-white hover-zoom" style="background-color: var(--coffee-dark);">
+                        <i class="bi bi-images me-2"></i> XEM ẢNH KHÔNG GIAN
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="text-white text-center py-5 mt-auto" style="background-color: var(--coffee-dark);">
+        <div class="container">
+            <div class="mb-3">
+                <a href="#" class="text-white text-decoration-none mx-3 hover-text-warning">Về chúng tôi</a>
+                <a href="#" class="text-white text-decoration-none mx-3 hover-text-warning">Hệ thống cửa hàng</a>
+                <a href="#" class="text-white text-decoration-none mx-3 hover-text-warning">Chính sách bảo mật</a>
+                <a href="#" class="text-white text-decoration-none mx-3 hover-text-warning">Tuyển dụng</a>
+            </div>
+            <div class="mb-4">
+                <a href="#" class="text-white fs-4 mx-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-white fs-4 mx-2"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-white fs-4 mx-2"><i class="bi bi-tiktok"></i></a>
+            </div>
+            <hr class="w-50 mx-auto bg-light opacity-50">
+            <small class="text-light opacity-75 d-block mt-3">© 2026 CaféBook. Phục vụ với trọn đam mê.</small>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 overflow-hidden border-0 shadow-lg">
+                <div class="modal-header modal-header-coffee">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-person-bounding-box me-2 text-warning"></i> Chào mừng đến với CaféBook</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 p-md-5 bg-white">
+                    <ul class="nav nav-pills mb-4 justify-content-center" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-bold px-4 rounded-pill" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" style="color: var(--coffee-dark);">Đăng nhập</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-bold px-4 rounded-pill" data-bs-toggle="pill" data-bs-target="#pills-register" type="button" style="color: var(--coffee-dark);">Đăng ký</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-login" role="tabpanel">
+                            <form id="loginForm">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control rounded-4" id="loginEmail" placeholder="name@example.com" required>
+                                    <label for="loginEmail">Email của bạn</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control rounded-4" id="loginPassword" placeholder="Password" required>
+                                    <label for="loginPassword">Mật khẩu</label>
+                                </div>
+                                <button type="submit" class="btn btn-warning w-100 fw-bold py-3 rounded-pill shadow-sm fs-5">ĐĂNG NHẬP NGAY</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="pills-register" role="tabpanel">
+                            <form id="registerForm">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control rounded-4" id="regName" placeholder="Tên của bạn" required>
+                                    <label for="regName">Họ và tên</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control rounded-4" id="regEmail" placeholder="name@example.com" required>
+                                    <label for="regEmail">Email</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control rounded-4" id="regPassword" placeholder="Password" required>
+                                    <label for="regPassword">Mật khẩu</label>
+                                </div>
+                                <button type="submit" class="btn btn-dark w-100 fw-bold py-3 rounded-pill shadow-sm fs-5">ĐĂNG KÝ NGAY</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function renderUserInfo() {
+            const currentUser = JSON.parse(localStorage.getItem('cafeCurrentUser'));
+            const navLoginBtn = document.getElementById('navLoginBtn');
+
+            if (currentUser && navLoginBtn) {
+                navLoginBtn.innerHTML = `<i class="bi bi-person-check-fill"></i> ${currentUser.name}`;
+                navLoginBtn.removeAttribute('data-bs-toggle');
+                navLoginBtn.href = "#"; 
+            }
+        }
+
+        const registerForm = document.getElementById('registerForm');
+        if(registerForm) {
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('regName').value;
+                const email = document.getElementById('regEmail').value;
+                const newUser = { name: name, email: email, points: 0 };
+                localStorage.setItem('cafeCurrentUser', JSON.stringify(newUser));
+                alert('Đăng ký thành công! Chào mừng ' + name);
+                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+                renderUserInfo();
+            });
+        }
+
+        const loginForm = document.getElementById('loginForm');
+        if(loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                let user = JSON.parse(localStorage.getItem('cafeCurrentUser'));
+                if (!user || user.email !== email) {
+                    user = { name: "Khách hàng " + email.split('@')[0], email: email, points: 0 };
+                    localStorage.setItem('cafeCurrentUser', JSON.stringify(user));
+                }
+                alert('Đăng nhập thành công!');
+                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+                renderUserInfo();
+            });
+        }
+
+        const updateCartUI = () => {
+            const cart = JSON.parse(localStorage.getItem('cafeCart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountTop = document.getElementById('cartCountTop');
+            if(cartCountTop) cartCountTop.innerText = totalItems;
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderUserInfo();
+            updateCartUI();
+
+            // JS cho hiệu ứng chuyển trang
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && !href.startsWith('#') && !this.hasAttribute('data-bs-toggle') && !this.hasAttribute('onclick')) {
+                        e.preventDefault();
+                        document.body.classList.add('page-fade-out');
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 300);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
